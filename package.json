@@ -1,0 +1,26 @@
+{
+  "name": "candidate-questionnaire",
+  "version": "0.0.1",
+  "description": "Present candidate questionnaires in a way that allows easier comparison of answers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kcivey/candidate-questionnaire.git"
+  },
+  "author": "Keith C. Ivey <keith@iveys.org>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kcivey/candidate-questionnaire/issues"
+  },
+  "homepage": "https://github.com/kcivey/candidate-questionnaire#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "glob": "^7.1.6"
+  },
+  "devDependencies": {
+    "eslint": "^6.6.0"
+  }
+}
