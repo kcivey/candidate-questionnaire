@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>DC 2020 Democratic Primary Questionnaires</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/all.min.css" integrity="sha256-7rF6RaSKyh16288E3hVdzQtHyzatA2MQRGu0cf6pqqM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="/index.css">
+  <style type="text/css">
+    #table-container {
+      max-width: 100%;
+      overflow-x: scroll;
+      width: auto;
+      display: inline-block;
+    }
+    #questionnaire-table {
+      table-layout: fixed;
+    }
+    .limited {
+      overflow: hidden;
+    }
+    .more, .less {
+      font-size: 0.8rem;
+      font-style: italic;
+      float: right;
+      color: #003dcc;
+      padding: 0 4px;
+    }
+    .expandable {
+      cursor: pointer;
+    }
+    .expandable:hover .more, .expandable:hover .less {
+      background-color: #eeee0077;
+      border-radius: 10px;
+      box-shadow: 0 0 16px #eeee00;
+    }
+  </style>
+</head>
+<body>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <h1>DC 2020 Democratic Primary Questionnaires</h1>
+      <div>
+        <label for="contest-select"><b>Select a contest:</b></label>
+        <select id="contest-select"></select>
+      </div>
+      <div id="table-container"></div>
+    </div>
+  </div>
+</div>
+<%= '\x3c%= nav %\x3e' %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js" integrity="sha256-fTuUgtT7O2rqoImwjrhDgbXTKUwyxxujIMRIK7TbuNU=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js" integrity="sha256-G7A4JrJjJlFqP0yamznwPjAApIKPkadeHfyIwiaa9e0=" crossorigin="anonymous"></script>
+<script src="questionnaire.js"></script>
+<script id="questionnaire-table-template" type="text/template">
+  <table id="questionnaire-table" class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Question</th>
+        <% _.each(questionsAndAnswers.answers[office], function (answers, candidate) { %>
+          <th><%= candidate %></th>
+        <% }); %>
+      </tr>
+    </thead>
+    <tbody>
+      <% _.each(questionsAndAnswers.questions, function (question, i) { %>
+        <tr>
+          <th scope="row"><div class="limited"><%= question %></div></th>
+          <% _.each(questionsAndAnswers.answers[office], function (answers, candidate) { %>
+          <td><div class="limited"><%= answers[i] %></div></td>
+          <% }); %>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</script>
+</body>
+</html>
