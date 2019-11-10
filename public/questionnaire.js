@@ -17,7 +17,10 @@ jQuery(function ($) {
                 const office = $(this).val();
                 $('#table-container').html(tableTemplate({questionsAndAnswers, office}));
                 const columns = Object.keys(questionsAndAnswers.answers[office]).length + 1;
-                $('#questionnaire-table').css('maxWidth', (columns * 30) + 'rem');
+                $('#questionnaire-table').css({
+                    minWidth: (columns * 15) + 'rem',
+                    maxWidth: (columns * 30) + 'rem',
+                });
                 shrinkAllCells();
             })
             .trigger('change');
