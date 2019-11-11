@@ -5,6 +5,7 @@ const fs = require('fs');
 const util = require('util');
 const cheerio = require('cheerio');
 const glob = util.promisify(require('glob'));
+const csvParse = util.promisify(require('csv-parse'));
 const officeMap = {
     'Council Ward 2': /W2/,
     'Council Ward 4': /W4/,
@@ -100,4 +101,10 @@ function getCheerio(inputFile) {
         .replace(/\s+/g, ' ')
         .replace(/ id="[^"]+"/g, '');
     return cheerio.load(html);
+}
+
+async function getWfpQuestionnaire() {
+    const file = __dirname + '/wfp.tsv';
+    const data = await csvParse(fs.readFileSync(file, 'utf8'), {columns: true, delimiter: '\t', quote: null});
+    console.warn(data);
 }
