@@ -15,6 +15,13 @@
       display: inline-block;
       position: relative;
     }
+    #table-container-top-scroller {
+      overflow-x: scroll;
+      max-width: 100%;
+    }
+    #table-container-top-scroller > div {
+      height: 20px;
+    }
     #questionnaire-table, #questionnaire-table-head {
       table-layout: fixed;
       background-color: white;
@@ -90,6 +97,9 @@
           <select id="contest-select"></select>
         </div>
         <div id="checkbox-container" class="float-left"></div>
+      </div>
+      <div id="table-container-top-scroller">
+        <div></div>
       </div>
       <div id="table-container"></div>
     </div>

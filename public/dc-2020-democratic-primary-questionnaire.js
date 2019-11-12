@@ -6,10 +6,18 @@ jQuery(function ($) {
     $.getJSON('dc-2020-democratic-primary-questionnaire.json')
         .then(writeQuestionnaire)
         .catch(console.error);
-    $('#table-container').on('click', '.expandable', toggleRow);
+    $('#table-container').on('click', '.expandable', toggleRow)
+        .on('scroll', function () {
+            const pos = $(this).scrollLeft();
+            $('#table-container-top-scroller').scrollLeft(pos);
+        });
+    $('#table-container-top-scroller')
+        .on('scroll', function () {
+            const pos = $(this).scrollLeft();
+            $('#table-container').scrollLeft(pos);
+        });
     let resizeTimer;
     $(window).on('resize', function () {
-        console.log('resize')
         if (resizeTimer) {
             clearTimeout(resizeTimer);
         }
@@ -101,6 +109,7 @@ jQuery(function ($) {
     function adjustTable() {
         const tableContainer = $('#table-container');
         tableContainer.height($(window).height() - 60);
+        $('#table-container-top-scroller div').width($('#questionnaire-table').width());
         $('#questionnaire-table')
             .find('.question-row')
             .each((i, el) => shrinkRow($(el)));
