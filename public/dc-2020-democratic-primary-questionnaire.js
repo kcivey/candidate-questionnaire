@@ -3,7 +3,7 @@ jQuery(function ($) {
     const checkboxesTemplate = _.template($('#checkboxes-template').html());
     const tableTemplate = _.template($('#questionnaire-table-template').html());
     const maxHeight = 320;
-    $.getJSON('questionnaire.json')
+    $.getJSON('dc-2020-democratic-primary-questionnaire.json')
         .then(writeQuestionnaire)
         .catch(console.error);
     $('#table-container').on('click', '.expandable', toggleRow);
@@ -20,12 +20,15 @@ jQuery(function ($) {
                 const firstOrg = Object.keys(questionsAndAnswersByOrg)[0];
                 const candidates = shuffleArray(Object.keys(questionsAndAnswersByOrg[firstOrg].answers));
                 $('#checkbox-container').html(checkboxesTemplate({candidates}));
-                $('#table-container').html(tableTemplate({candidates, questionsAndAnswersByOrg}));
+                const tableContainer = $('#table-container');
+                tableContainer.height($(window).height() - 60)
+                    .html(tableTemplate({candidates, questionsAndAnswersByOrg}));
                 const columns = candidates.length + 1;
                 $('#questionnaire-table').css({
                     minWidth: (columns * 15) + 'rem',
                     maxWidth: (columns * 30) + 'rem',
                 });
+                $('#questionnaire-table-head').width($('#questionnaire-table').width());
                 shrinkAllCells();
             })
             .trigger('change');

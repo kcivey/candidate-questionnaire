@@ -10,13 +10,19 @@
   <style type="text/css">
     #table-container {
       max-width: 100%;
-      overflow-x: scroll;
+      overflow: scroll;
       width: auto;
       display: inline-block;
+      position: relative;
     }
-    #questionnaire-table {
+    #questionnaire-table, #questionnaire-table-head {
       table-layout: fixed;
       background-color: white;
+    }
+    #questionnaire-table-head {
+      margin-bottom: 0;
+      position: sticky;
+      top: 0;
     }
     .limited {
       overflow: hidden;
@@ -94,7 +100,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js" integrity="sha256-fTuUgtT7O2rqoImwjrhDgbXTKUwyxxujIMRIK7TbuNU=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js" integrity="sha256-G7A4JrJjJlFqP0yamznwPjAApIKPkadeHfyIwiaa9e0=" crossorigin="anonymous"></script>
-<script src="questionnaire.js"></script>
+<script src="dc-2020-democratic-primary-questionnaire.js"></script>
 <script id="checkboxes-template" type="text/template">
   <label><b>Compare candidates:</b></label>
   <div class="control-group">
@@ -107,16 +113,20 @@
   </div>
 </script>
 <script id="questionnaire-table-template" type="text/template">
+  <table id="questionnaire-table-head" class="table">
+    <thead>
+      <tr>
+        <th scope="col">Question</th>
+          <% _.each(candidates, function (candidate) { %>
+            <th><%= candidate %></th>
+          <% }); %>
+      </tr>
+    </thead>
+  </table>
   <table id="questionnaire-table" class="table">
     <tbody>
       <% _.each(questionsAndAnswersByOrg, function (questionsAndAnswers, org) { %>
         <tr><th class="org-head" colspan="<%= candidates.length + 1 %>"><%- org %></th></tr>
-        <tr>
-          <th scope="col">Question</th>
-          <% _.each(candidates, function (candidate) { %>
-          <th><%= candidate %></th>
-          <% }); %>
-        </tr>
         <% _.each(questionsAndAnswers.questions, function (question, i) { %>
           <tr class="question-row<% if (i % 2) { %> striped<% } %>">
             <th class="question" scope="row">
