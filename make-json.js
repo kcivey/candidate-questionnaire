@@ -65,6 +65,7 @@ function processFile(inputFile) {
         const div = $('<div></div>').append(p);
         const html = div.html()
             .replace(/ class="[^"]+"/g, '')
+            .replace(/<p>\s*-\s*/g, '<p>')
             .replace(
                 /https:\/\/www.google.com\/url\?q=([^&\s]+)[^"<>\s]*/,
                 (m, m1) => decodeURIComponent(m1)
@@ -75,7 +76,7 @@ function processFile(inputFile) {
         if ((m = text.match(/^(\d\d?)\. /))) {
             assert.strictEqual(questionNumber + 1, +m[1], 'Question number mismatch');
             questionNumber = +m[1];
-            questions[questionNumber - 1] = html;
+            questions[questionNumber - 1] = html.replace(/\b\d\d?\.\s+/, '');
         }
         else if (/^(?!N\/A)[A-Z\W]+$/.test(text) || !questionNumber || !text) {
             // skip heads and intro and empty paragraphs

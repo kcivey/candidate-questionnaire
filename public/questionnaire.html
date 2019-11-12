@@ -41,6 +41,25 @@
     #checkbox-container .control-group {
       display: inline-block;
     }
+    .question-number {
+      margin-right: 0.5rem;
+      border: 1px solid #7abaff;
+      background-color: #7abaff77;
+      padding: 0.1rem 0.7rem;
+      font-size: 1.4rem;
+      border-radius: 6px;
+      color: #0000ee88;
+    }
+    .table-striped tbody tr:nth-of-type(2n+1) .question-number {
+      background-color: #7abaff88;
+    }
+    th.question {
+      font-weight: normal;
+      background-color: #7abaff66;
+    }
+    .table-striped tbody tr:nth-of-type(2n+1) th.question {
+      background-color: #7abaff77;
+    }
   </style>
 </head>
 <body>
@@ -89,7 +108,12 @@
     <tbody>
       <% _.each(questions, function (question, i) { %>
         <tr>
-          <th scope="row"><div class="limited"><%= question %></div></th>
+          <th class="question" scope="row">
+            <div class="limited">
+              <div class="float-left question-number"><%= i + 1 %></div>
+              <%= question %>
+            </div>
+          </th>
           <% _.each(candidates, function (candidate) { %>
             <td><div class="limited"><%= answersByCandidate[candidate][i] %></div></td>
           <% }); %>
