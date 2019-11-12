@@ -35,6 +35,12 @@
       border-radius: 10px;
       box-shadow: 0 0 16px #eeee00;
     }
+    #checkbox-container {
+      margin-left: 20px;
+    }
+    #checkbox-container .control-group {
+      display: inline-block;
+    }
   </style>
 </head>
 <body>
@@ -42,9 +48,12 @@
   <div class="row">
     <div class="col">
       <h1>DC 2020 Democratic Primary Questionnaires</h1>
-      <div>
-        <label for="contest-select"><b>Select a contest:</b></label>
-        <select id="contest-select"></select>
+      <div class="clearfix">
+        <div class="float-left">
+          <label for="contest-select"><b>Select a contest:</b></label>
+          <select id="contest-select"></select>
+        </div>
+        <div id="checkbox-container" class="float-left"></div>
       </div>
       <div id="table-container"></div>
     </div>
@@ -56,6 +65,17 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha256-CjSoeELFOcH0/uxWu6mC/Vlrc1AARqbm/jiiImDGV3s=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js" integrity="sha256-G7A4JrJjJlFqP0yamznwPjAApIKPkadeHfyIwiaa9e0=" crossorigin="anonymous"></script>
 <script src="questionnaire.js"></script>
+<script id="checkboxes-template" type="text/template">
+  <label><b>Compare candidates:</b></label>
+  <div class="control-group">
+    <% _.each(candidates, function (candidate, i) { %>
+      <div class="form-check form-check-inline">
+        <input type="checkbox" id="show-<%- i %>" class="form-check-input" name="candidate" value="<%- i + 2 %>" checked>
+        <label class="form-check-label" for="show-<%- i %>"><%- candidate %></label>
+      </div>
+    <% }); %>
+  </div>
+</script>
 <script id="questionnaire-table-template" type="text/template">
   <table id="questionnaire-table" class="table table-striped">
     <thead>

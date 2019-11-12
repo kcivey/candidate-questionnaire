@@ -1,5 +1,6 @@
 /* global jQuery, _ */
 jQuery(function ($) {
+    const checkboxesTemplate = _.template($('#checkboxes-template').html());
     const tableTemplate = _.template($('#questionnaire-table-template').html());
     const maxHeight = 320;
     $.getJSON('questionnaire.json')
@@ -17,6 +18,7 @@ jQuery(function ($) {
                 const office = $(this).val();
                 const answersByCandidate = questionsAndAnswers.answers[office];
                 const candidates = shuffleArray(Object.keys(answersByCandidate));
+                $('#checkbox-container').html(checkboxesTemplate({candidates}));
                 $('#table-container').html(tableTemplate({
                     candidates,
                     questions: questionsAndAnswers.questions,
@@ -30,6 +32,15 @@ jQuery(function ($) {
                 shrinkAllCells();
             })
             .trigger('change');
+        $('#checkbox-container')
+            .on('click', 'input', function () {
+                const checkboxes = $('#checkbox-container').find('input');
+                const showAll = checkboxes.filter(':checked').length === 0;
+                checkboxes.each(function () {
+                    const column = +$(this).val();
+                    $(`#questionnaire-table tr > :nth-child(${column})`).toggle(showAll || $(this).is(':checked'));
+                });
+            });
     }
 
     function toggleRow(evt) {
