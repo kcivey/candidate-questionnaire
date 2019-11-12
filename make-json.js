@@ -37,6 +37,9 @@ async function main() {
         questionsAndAnswers['questions'] = questions;
         answersByOffice[office][candidate] = answers;
     }
+    if (!answersByOffice['Council Ward 4']['Todd']) {
+        answersByOffice['Council Ward 4']['Todd'] = [];
+    }
     questionsAndAnswers['answers'] = answersByOffice;
     process.stdout.write(JSON.stringify(questionsAndAnswers));
 }

@@ -62,6 +62,9 @@
     .table-striped tbody tr:nth-of-type(2n+1) th.question {
       background-color: #7abaff44;
     }
+    td.no-response {
+      color: #c00;
+    }
   </style>
 </head>
 <body>
@@ -117,7 +120,13 @@
             </div>
           </th>
           <% _.each(candidates, function (candidate) { %>
-            <td><div class="limited"><%= answersByCandidate[candidate][i] %></div></td>
+              <% if (answersByCandidate[candidate][i]) { %>
+                <td>
+                  <div class="limited"><%= answersByCandidate[candidate][i] %></div>
+                </td>
+              <% } else { %>
+                <td class="no-response">Did not respond to questionnaire.</td>
+              <% } %>
           <% }); %>
         </tr>
       <% }); %>
