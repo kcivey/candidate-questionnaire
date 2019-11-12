@@ -61,17 +61,17 @@
     <thead>
       <tr>
         <th scope="col">Question</th>
-        <% _.each(questionsAndAnswers.answers[office], function (answers, candidate) { %>
+        <% _.each(candidates, function (candidate) { %>
           <th><%= candidate %></th>
         <% }); %>
       </tr>
     </thead>
     <tbody>
-      <% _.each(questionsAndAnswers.questions, function (question, i) { %>
+      <% _.each(questions, function (question, i) { %>
         <tr>
           <th scope="row"><div class="limited"><%= question %></div></th>
-          <% _.each(questionsAndAnswers.answers[office], function (answers, candidate) { %>
-          <td><div class="limited"><%= answers[i] %></div></td>
+          <% _.each(candidates, function (candidate) { %>
+            <td><div class="limited"><%= answersByCandidate[candidate][i] %></div></td>
           <% }); %>
         </tr>
       <% }); %>

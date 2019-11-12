@@ -15,7 +15,13 @@ jQuery(function ($) {
             )
             .on('change', function () {
                 const office = $(this).val();
-                $('#table-container').html(tableTemplate({questionsAndAnswers, office}));
+                const answersByCandidate = questionsAndAnswers.answers[office];
+                const candidates = shuffleArray(Object.keys(answersByCandidate));
+                $('#table-container').html(tableTemplate({
+                    candidates,
+                    questions: questionsAndAnswers.questions,
+                    answersByCandidate,
+                }));
                 const columns = Object.keys(questionsAndAnswers.answers[office]).length + 1;
                 $('#questionnaire-table').css({
                     minWidth: (columns * 15) + 'rem',
@@ -73,5 +79,14 @@ jQuery(function ($) {
         $('#questionnaire-table')
             .find('tbody tr')
             .each((i, el) => shrinkRow($(el)));
+    }
+
+    function shuffleArray(originalArray) {
+        const array = [...originalArray];
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
     }
 });
