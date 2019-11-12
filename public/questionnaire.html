@@ -42,6 +42,9 @@
     #checkbox-container .control-group {
       display: inline-block;
     }
+    tr.striped {
+      background-color: rgba(0,0,0,.05);
+    }
     .question-number {
       margin-right: 0.5rem;
       border: 1px solid #7abaff;
@@ -51,7 +54,7 @@
       border-radius: 6px;
       color: #0000ee66;
     }
-    .table-striped tbody tr:nth-of-type(2n+1) .question-number {
+    tbody tr.striped .question-number {
       background-color: #7abaff55;
       color: #0000ee77;
     }
@@ -59,11 +62,14 @@
       font-weight: normal;
       background-color: #7abaff33;
     }
-    .table-striped tbody tr:nth-of-type(2n+1) th.question {
+    tr.striped th.question {
       background-color: #7abaff44;
     }
     td.no-response {
       color: #c00;
+    }
+    th.org-head {
+      font-size: 1.4rem;
     }
   </style>
 </head>
@@ -101,34 +107,35 @@
   </div>
 </script>
 <script id="questionnaire-table-template" type="text/template">
-  <table id="questionnaire-table" class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">Question</th>
-        <% _.each(candidates, function (candidate) { %>
-          <th><%= candidate %></th>
-        <% }); %>
-      </tr>
-    </thead>
+  <table id="questionnaire-table" class="table">
     <tbody>
-      <% _.each(questions, function (question, i) { %>
+      <% _.each(questionsAndAnswersByOrg, function (questionsAndAnswers, org) { %>
+        <tr><th class="org-head" colspan="<%= candidates.length + 1 %>"><%- org %></th></tr>
         <tr>
-          <th class="question" scope="row">
-            <div class="limited">
-              <div class="float-left question-number"><%= i + 1 %></div>
-              <%= question %>
-            </div>
-          </th>
+          <th scope="col">Question</th>
           <% _.each(candidates, function (candidate) { %>
-              <% if (answersByCandidate[candidate][i]) { %>
-                <td>
-                  <div class="limited"><%= answersByCandidate[candidate][i] %></div>
-                </td>
-              <% } else { %>
-                <td class="no-response">Did not respond to questionnaire.</td>
-              <% } %>
+          <th><%= candidate %></th>
           <% }); %>
         </tr>
+        <% _.each(questionsAndAnswers.questions, function (question, i) { %>
+          <tr class="question-row<% if (i % 2) { %> striped<% } %>">
+            <th class="question" scope="row">
+              <div class="limited">
+                <div class="float-left question-number"><%= i + 1 %></div>
+                <%= question %>
+              </div>
+            </th>
+            <% _.each(candidates, function (candidate) { %>
+                <% if (questionsAndAnswers.answers[candidate][i]) { %>
+                  <td>
+                    <div class="limited"><%= questionsAndAnswers.answers[candidate][i] %></div>
+                  </td>
+                <% } else { %>
+                  <td class="no-response">Did not respond to questionnaire.</td>
+                <% } %>
+            <% }); %>
+          </tr>
+        <% }); %>
       <% }); %>
     </tbody>
   </table>

@@ -8,23 +8,20 @@ jQuery(function ($) {
         .catch(console.error);
     $('#table-container').on('click', '.expandable', toggleRow);
 
-    function writeQuestionnaire(questionsAndAnswers) {
-        const offices = Object.keys(questionsAndAnswers.answers);
+    function writeQuestionnaire(questionsAndAnswersByOffice) {
+        const offices = Object.keys(questionsAndAnswersByOffice);
         $('#contest-select')
             .append(
                 offices.map(office => `<option>${office}</option>`)
             )
             .on('change', function () {
                 const office = $(this).val();
-                const answersByCandidate = questionsAndAnswers.answers[office];
-                const candidates = shuffleArray(Object.keys(answersByCandidate));
+                const questionsAndAnswersByOrg = questionsAndAnswersByOffice[office];
+                const firstOrg = Object.keys(questionsAndAnswersByOrg)[0];
+                const candidates = shuffleArray(Object.keys(questionsAndAnswersByOrg[firstOrg].answers));
                 $('#checkbox-container').html(checkboxesTemplate({candidates}));
-                $('#table-container').html(tableTemplate({
-                    candidates,
-                    questions: questionsAndAnswers.questions,
-                    answersByCandidate,
-                }));
-                const columns = Object.keys(questionsAndAnswers.answers[office]).length + 1;
+                $('#table-container').html(tableTemplate({candidates, questionsAndAnswersByOrg}));
+                const columns = candidates.length + 1;
                 $('#questionnaire-table').css({
                     minWidth: (columns * 15) + 'rem',
                     maxWidth: (columns * 30) + 'rem',
@@ -35,9 +32,12 @@ jQuery(function ($) {
         $('#checkbox-container')
             .on('click', 'input', function () {
                 const checkboxes = $('#checkbox-container').find('input');
-                const showAll = checkboxes.filter(':checked').length === 0;
+                const numberChecked = checkboxes.filter(':checked').length;
+                const showAll = !numberChecked;
+                const columnsShown = showAll ? checkboxes.length : numberChecked;
                 checkboxes.each(function () {
                     const column = +$(this).val();
+                    $('th.org-head').attr('colspan', columnsShown);
                     $(`#questionnaire-table tr > :nth-child(${column})`).toggle(showAll || $(this).is(':checked'));
                 });
                 shrinkAllCells();
@@ -91,7 +91,7 @@ jQuery(function ($) {
 
     function shrinkAllCells() {
         $('#questionnaire-table')
-            .find('tbody tr')
+            .find('.question-row')
             .each((i, el) => shrinkRow($(el)));
     }
 

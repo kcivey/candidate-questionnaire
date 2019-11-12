@@ -19,6 +19,7 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
     "csv-parse": "^4.6.5",
+    "entities": "^2.0.0",
     "glob": "^7.1.6"
   },
   "devDependencies": {
