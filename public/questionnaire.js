@@ -40,6 +40,7 @@ jQuery(function ($) {
                     const column = +$(this).val();
                     $(`#questionnaire-table tr > :nth-child(${column})`).toggle(showAll || $(this).is(':checked'));
                 });
+                shrinkAllCells();
             });
     }
 
@@ -73,14 +74,16 @@ jQuery(function ($) {
     function shrinkRow(row) {
         row.find('.limited')
             .each(function () {
+                $(this).height('auto')
+                    .parent()
+                    .removeClass('expandable')
+                    .find('.more, .less')
+                    .remove();
                 const height = $(this).height();
                 if (height > maxHeight) {
-                    $(this).parent()
-                        .addClass('expandable')
-                        .find('.more, .less')
-                        .remove();
                     $(this).height(maxHeight)
                         .parent()
+                        .addClass('expandable')
                         .append('<div class="more"><a href="#">more</a></div>');
                 }
             });
