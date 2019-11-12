@@ -7,6 +7,14 @@ jQuery(function ($) {
         .then(writeQuestionnaire)
         .catch(console.error);
     $('#table-container').on('click', '.expandable', toggleRow);
+    let resizeTimer;
+    $(window).on('resize', function () {
+        console.log('resize')
+        if (resizeTimer) {
+            clearTimeout(resizeTimer);
+        }
+        resizeTimer = setTimeout(adjustTable, 100);
+    });
 
     function writeQuestionnaire(questionsAndAnswersByOffice) {
         const offices = Object.keys(questionsAndAnswersByOffice);
@@ -20,16 +28,14 @@ jQuery(function ($) {
                 const firstOrg = Object.keys(questionsAndAnswersByOrg)[0];
                 const candidates = shuffleArray(Object.keys(questionsAndAnswersByOrg[firstOrg].answers));
                 $('#checkbox-container').html(checkboxesTemplate({candidates}));
-                const tableContainer = $('#table-container');
-                tableContainer.height($(window).height() - 60)
-                    .html(tableTemplate({candidates, questionsAndAnswersByOrg}));
+                $('#table-container').html(tableTemplate({candidates, questionsAndAnswersByOrg}));
                 const columns = candidates.length + 1;
                 $('#questionnaire-table').css({
                     minWidth: (columns * 15) + 'rem',
                     maxWidth: (columns * 30) + 'rem',
                 });
                 $('#questionnaire-table-head').width($('#questionnaire-table').width());
-                shrinkAllCells();
+                adjustTable();
             })
             .trigger('change');
         $('#checkbox-container')
@@ -43,7 +49,7 @@ jQuery(function ($) {
                     $('th.org-head').attr('colspan', columnsShown);
                     $(`#questionnaire-table tr > :nth-child(${column})`).toggle(showAll || $(this).is(':checked'));
                 });
-                shrinkAllCells();
+                adjustTable();
             });
     }
 
@@ -92,7 +98,9 @@ jQuery(function ($) {
             });
     }
 
-    function shrinkAllCells() {
+    function adjustTable() {
+        const tableContainer = $('#table-container');
+        tableContainer.height($(window).height() - 60);
         $('#questionnaire-table')
             .find('.question-row')
             .each((i, el) => shrinkRow($(el)));
