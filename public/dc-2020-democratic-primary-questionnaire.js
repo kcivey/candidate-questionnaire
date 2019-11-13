@@ -108,7 +108,7 @@ jQuery(function ($) {
 
     function adjustTable() {
         const tableContainer = $('#table-container');
-        tableContainer.height($(window).height() - 60);
+        tableContainer.height(Math.max($(window).height() - 90, 200));
         $('#table-container-top-scroller div').width($('#questionnaire-table').width());
         $('#questionnaire-table')
             .find('.question-row')
