@@ -10,6 +10,9 @@ const csvParse = util.promisify(require('csv-parse'));
 const officeMap = {
     'Council Ward 2': /W2/,
     'Council Ward 4': /W4/,
+    'Council Ward 7': /W7/,
+    'Council Ward 8': /W8/,
+    'Shadow Representative': /ShadowRep/,
 };
 
 main()
@@ -77,6 +80,9 @@ function processFile(inputFile) {
             .trim();
         let m;
         if ((m = text.match(/^(\d\d?)\. /))) {
+            if ((m[1] === '6' || m[1] === '19') && questionNumber === m[1] - 2 && /W\d/.test(inputFile)) {
+                questionNumber++;
+            }
             assert.strictEqual(questionNumber + 1, +m[1], 'Question number mismatch');
             questionNumber = +m[1];
             if (text.match(/^\d\d?\. \(Ward 2/)) {
@@ -98,7 +104,7 @@ function processFile(inputFile) {
             }
             const i = questionNumber - 1;
             if (!answers[i]) {
-                answers.push(html);
+                answers[i] = html;
             }
             else {
                 answers[i] += '\n' + html;
